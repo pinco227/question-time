@@ -15,12 +15,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django_registration.backends.one_step.views import RegistrationView
+from users.forms import CustomUserForm
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # login via brosable API
+    # account views
+    path('accounts/register/',
+         RegistrationView.as_view(
+             form_class=CustomUserForm,
+             success_url="/"
+         ), name='django_registration_register'),
+    path('accounts/', include('django_registration.backends.one_step.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
+    # login via browsable API
     path('api-auth/', include('rest_framework.urls')),
-    # login via REST
-    path('api/rest_auth', include('rest_auth.urls')),
+    # login via REST (api)
+    path('api/rest_auth/', include('rest_auth.urls')),
     path('api/rest_auth/registration', include('rest_auth.registration.urls')),
 ]
