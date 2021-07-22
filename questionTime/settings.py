@@ -184,12 +184,12 @@ REST_FRAMEWORK = {
 }
 
 # AWS
-if not DEVELOPMENT:
+if env('USE_AWS', default=False):
     # Cache control
-    AWS_S3_OBJECT_PARAMETERS = {
-        'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
-        'CacheControl': 'max-age=94608000'
-    }
+    # AWS_S3_OBJECT_PARAMETERS = {
+    #     'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
+    #     'CacheControl': 'max-age=94608000'
+    # }
     # Bucket Config
     AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
     AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME')
