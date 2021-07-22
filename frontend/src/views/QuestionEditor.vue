@@ -9,10 +9,10 @@
           class="form-control"
           placeholder="What do you want to ask?"
         ></textarea>
+        <p v-if="error" class="text-danger mt-2">{{ error }}</p>
       </div>
       <button type="submit" class="btn btn-success">Publish</button>
     </form>
-    <p v-if="error" class="muted mt-2">{{ error }}</p>
   </div>
 </template>
 
