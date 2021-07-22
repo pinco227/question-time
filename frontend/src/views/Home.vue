@@ -4,8 +4,8 @@
       <p class="mb-0">
         Posted by:
         <span class="question-author">{{ question.author }}</span>
+        &#8901; {{ question.created_at }}
       </p>
-      <p class="mb-0">{{ question.created_at }}</p>
       <h2>
         <router-link
           :to="{ name: 'question', params: { slug: question.slug } }"
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { apiService } from "../common/api.service";
+import { apiService } from "@/common/api.service";
 export default {
   name: "Home",
   data() {

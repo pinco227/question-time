@@ -2,14 +2,21 @@
   <div class="single-question mt-2">
     <h1>{{ question.content }}</h1>
     <p class="mb-0">
-      Posted by: <span class="author-name">{{ question.author }}</span>
+      Posted by: <span class="author-name">{{ question.author }}</span> &#8901;
+      {{ question.created_at }}
     </p>
-    <p>{{ question.created_at }}</p>
+    <hr />
+    <AnswerComponent
+      v-for="(answer, index) in answers"
+      :key="index"
+      :answer="answer"
+    />
   </div>
 </template>
 
 <script>
-import { apiService } from "../common/api.service";
+import { apiService } from "@/common/api.service";
+import AnswerComponent from "@/components/Answer.vue";
 export default {
   name: "Question",
   props: {
@@ -18,9 +25,13 @@ export default {
       required: true,
     },
   },
+  components: {
+    AnswerComponent,
+  },
   data() {
     return {
       question: {},
+      answers: [],
     };
   },
   methods: {
@@ -34,9 +45,16 @@ export default {
         this.setPageTitle(data.content);
       });
     },
+    getQuestionAnswers() {
+      let endpoint = `/api/questions/${this.slug}/answers/`;
+      apiService(endpoint).then((data) => {
+        this.answers = data.results;
+      });
+    },
   },
   created() {
     this.getQuestionData();
+    this.getQuestionAnswers();
   },
 };
 </script>
