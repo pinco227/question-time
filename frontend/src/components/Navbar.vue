@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light my-navbar">
     <div class="container-xl">
-      <router-link :to="{ name: 'Home' }" class="navbar-brand"
+      <router-link :to="{ name: 'home' }" class="navbar-brand"
         >QuestionTime
       </router-link>
       <button
@@ -19,14 +19,14 @@
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <router-link
-              :to="{ name: 'Home' }"
+              :to="{ name: 'home' }"
               class="nav-link btn btn-sm btn-success text-white mx-1"
               >Home
             </router-link>
           </li>
           <li class="nav-item">
             <router-link
-              :to="{ name: 'Home' }"
+              :to="{ name: 'home' }"
               class="nav-link btn btn-sm btn-danger text-white mx-1"
               >Add Question
             </router-link>
