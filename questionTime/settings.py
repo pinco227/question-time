@@ -156,7 +156,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 SITE_ID = 1
 
 # django.allauth
-ACCOUNTS_EMAIL_VERIFICATION = "none"
+ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_EMAIL_REQUIRED = (True)
 
 # Django-REST-Framework

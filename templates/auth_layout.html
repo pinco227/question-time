@@ -28,7 +28,13 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
     <style>
+        html, body {
+            height: 100%;
+            font-family: 'Playfair Display', serif;
+            background-color: #ddd;
+        }
         .login-form-container {
             width: 300px;
             margin: auto;
@@ -37,13 +43,27 @@
             width: 400px;
             margin: auto;
         }
+        .outer-area {
+            margin-top: 100px;
+        }
+        .auth-box {
+            width: 50%;
+            margin: auto;
+            background-color: #fff;
+            border-radius: 1.5rem;
+            padding: 1rem;
+        }
     </style>
 </head>
 
 <body>
-    <div class="auth-box text-center">
-        {% block content %}{% endblock content %}
+
+    <div class="outer-area">
+        <div class="auth-box text-center">
+            {% block content %}{% endblock content %}
+        </div>
     </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/js/bootstrap.min.js"></script>
 </body>
