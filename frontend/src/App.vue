@@ -1,10 +1,10 @@
 <template>
-  <div id="app">
+  <main>
     <NavbarComponent />
     <div class="container-xl content-container">
       <router-view />
     </div>
-  </div>
+  </main>
 </template>
 
 <script>
@@ -26,6 +26,9 @@ body {
 }
 .content-container {
   background-color: #fff;
+  margin: 1.5rem auto;
+  padding: 2rem;
+  border-radius: 1.5rem;
 }
 .btn:focus {
   box-shadow: none !important;

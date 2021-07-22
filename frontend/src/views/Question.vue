@@ -2,7 +2,7 @@
   <div class="single-question mt-2">
     <h1>{{ question.content }}</h1>
     <p class="mb-0">
-      Posted by: <spa class="author-name">{{ question.author }}</spa>
+      Posted by: <span class="author-name">{{ question.author }}</span>
     </p>
     <p>{{ question.created_at }}</p>
   </div>

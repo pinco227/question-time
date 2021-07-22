@@ -26,9 +26,9 @@
           </li>
           <li class="nav-item">
             <router-link
-              :to="{ name: 'home' }"
+              :to="{ name: 'question-editor' }"
               class="nav-link btn btn-sm btn-danger text-white mx-1"
-              >Add Question
+              >Ask Question
             </router-link>
           </li>
           <li class="nav-item">

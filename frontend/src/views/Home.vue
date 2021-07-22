@@ -1,10 +1,11 @@
 <template>
-  <div class="home">
-    <div v-for="question in questions" :key="question.pk">
+  <div class="home row">
+    <div v-for="question in questions" :key="question.pk" class="col-12">
       <p class="mb-0">
         Posted by:
-        <spa class="questions-author">{{ question.author }}</spa>
+        <span class="question-author">{{ question.author }}</span>
       </p>
+      <p class="mb-0">{{ question.created_at }}</p>
       <h2>
         <router-link
           :to="{ name: 'question', params: { slug: question.slug } }"
