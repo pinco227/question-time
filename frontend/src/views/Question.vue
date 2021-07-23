@@ -1,5 +1,5 @@
 <template>
-  <div class="single-question mt-2">
+  <div class="single-question mt-2 row">
     <h1>{{ question.content }}</h1>
     <p class="mb-0">
       Posted by: <span class="author-name">{{ question.author }}</span> &#8901;
@@ -45,6 +45,16 @@
       :key="index"
       :answer="answer"
     />
+    <div class="my-4" v-if="next">
+      <p v-show="loadingAnswers">...loading...</p>
+      <button
+        v-show="next"
+        @click="getQuestionAnswers"
+        class="btn btn-outline-success"
+      >
+        Load More...
+      </button>
+    </div>
   </div>
 </template>
 
@@ -69,6 +79,8 @@ export default {
       newAnswerBody: null,
       error: null,
       showForm: false,
+      next: null,
+      loadingAnswers: false,
     };
   },
   methods: {
@@ -80,13 +92,22 @@ export default {
       apiService(endpoint).then((data) => {
         this.setPageTitle(data.content);
         this.question = data;
-        // this.question.user_has_answered = data.user_has_answered;
       });
     },
     getQuestionAnswers() {
       let endpoint = `/api/questions/${this.slug}/answers/`;
+      if (this.next) {
+        endpoint = this.next;
+      }
+      this.loadingAnswers = true;
       apiService(endpoint).then((data) => {
-        this.answers = data.results;
+        this.answers.push(...data.results);
+        this.loadingAnswers = false;
+        if (data.next) {
+          this.next = data.next;
+        } else {
+          this.next = null;
+        }
       });
     },
     onSubmit() {
