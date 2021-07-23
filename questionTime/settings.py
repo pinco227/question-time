@@ -27,8 +27,6 @@ SECRET_KEY = env('SECRET_KEY', default='')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEVELOPMENT = env('DEVELOPMENT', default=False)
 DEBUG = DEVELOPMENT
-# DEVELOPMENT = False
-# DEBUG = True
 
 ALLOWED_HOSTS = [env('HOSTNAME', default='127.0.0.1')]
 
@@ -154,8 +152,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'frontend/dist'),
 ]
-if not env('USE_AWS', default=False):
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -190,31 +187,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 4
 }
 
-# AWS
-if env('USE_AWS', default=False):
-    # Cache control
-    AWS_S3_OBJECT_PARAMETERS = {
-        'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
-        'CacheControl': 'max-age=94608000'
-    }
-    # Bucket Config
-    AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
-    AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME')
-    AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
-    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-
-    # Static and media files
-    STATICFILES_STORAGE = 'custom_storages.StaticStorage'
-    STATICFILES_LOCATION = 'static'
-    # DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
-    # MEDIAFILES_LOCATION = 'media'
-
-    # Override static and media URLs in production
-    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATICFILES_LOCATION}/'
-    # MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/'
-else:
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # VUE
 WEBPACK_LOADER = {
