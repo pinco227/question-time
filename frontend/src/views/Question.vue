@@ -42,8 +42,8 @@
     </div>
     <hr />
     <AnswerComponent
-      v-for="(answer, index) in answers"
-      :key="index"
+      v-for="answer in answers"
+      :key="answer.id"
       :answer="answer"
       :requestUser="requestUser"
       @delete-answer="deleteAnswer"
