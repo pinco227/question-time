@@ -1,62 +1,68 @@
 <template>
   <div class="single-question mt-2 row">
-    <h1>{{ question.content }}</h1>
-    <QuestionActions v-if="isQuestionAuthor" :slug="question.slug" />
-    <p class="mb-0">
-      Posted by: <span class="author-name">{{ question.author }}</span> &#8901;
-      {{ question.created_at }}
-    </p>
-    <hr />
-    <div v-if="question.user_has_answered">
-      <p class="answer-added">You've answered this question.</p>
-    </div>
-    <div v-else-if="showForm">
-      <form class="card" @submit.prevent="onSubmit">
-        <div class="card-header px-3">Share your knowledge!</div>
-        <textarea
-          rows="5"
-          v-model="newAnswerBody"
-          class="card-body"
-          placeholder="Write your answer...."
-        ></textarea>
-        <div class="card-body bg-danger text-white fw-bold" v-if="error">
-          <p class="m-0">
-            <i class="fas fa-exclamation-triangle"></i> {{ error }}
-          </p>
-        </div>
-        <div class="card-footer px-3 d-flex justify-content-between">
-          <button type="submit" class="btn btn-sm btn-success">Submit</button>
-          <button
-            class="btn btn-sm btn-outline-danger"
-            @click="showForm = false"
-          >
-            Cancel
-          </button>
-        </div>
-      </form>
+    <div v-if="question">
+      <h1>{{ question.content }}</h1>
+      <QuestionActions v-if="isQuestionAuthor" :slug="question.slug" />
+      <p class="mb-0">
+        Posted by:
+        <span class="author-name">{{ question.author }}</span> &#8901;
+        {{ question.created_at }}
+      </p>
+      <hr />
+      <div v-if="question.user_has_answered">
+        <p class="answer-added">You've answered this question.</p>
+      </div>
+      <div v-else-if="showForm">
+        <form class="card" @submit.prevent="onSubmit">
+          <div class="card-header px-3">Share your knowledge!</div>
+          <textarea
+            rows="5"
+            v-model="newAnswerBody"
+            class="card-body"
+            placeholder="Write your answer...."
+          ></textarea>
+          <div class="card-body bg-danger text-white fw-bold" v-if="error">
+            <p class="m-0">
+              <i class="fas fa-exclamation-triangle"></i> {{ error }}
+            </p>
+          </div>
+          <div class="card-footer px-3 d-flex justify-content-between">
+            <button type="submit" class="btn btn-sm btn-success">Submit</button>
+            <button
+              class="btn btn-sm btn-outline-danger"
+              @click="showForm = false"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+      <div v-else>
+        <button class="btn btn-sm btn-success mb-3" @click="showForm = true">
+          Answer the Question
+        </button>
+      </div>
+      <hr />
+      <AnswerComponent
+        v-for="answer in answers"
+        :key="answer.id"
+        :answer="answer"
+        :requestUser="requestUser"
+        @delete-answer="deleteAnswer"
+      />
+      <div class="my-4" v-if="next">
+        <p v-show="loadingAnswers">...loading...</p>
+        <button
+          v-show="next"
+          @click="getQuestionAnswers"
+          class="btn btn-outline-success"
+        >
+          Load More...
+        </button>
+      </div>
     </div>
     <div v-else>
-      <button class="btn btn-sm btn-success mb-3" @click="showForm = true">
-        Answer the Question
-      </button>
-    </div>
-    <hr />
-    <AnswerComponent
-      v-for="answer in answers"
-      :key="answer.id"
-      :answer="answer"
-      :requestUser="requestUser"
-      @delete-answer="deleteAnswer"
-    />
-    <div class="my-4" v-if="next">
-      <p v-show="loadingAnswers">...loading...</p>
-      <button
-        v-show="next"
-        @click="getQuestionAnswers"
-        class="btn btn-outline-success"
-      >
-        Load More...
-      </button>
+      <h1 class="text-danger text-center">404 - Question Not Found</h1>
     </div>
   </div>
 </template>
@@ -104,8 +110,13 @@ export default {
     getQuestionData() {
       let endpoint = `/api/questions/${this.slug}/`;
       apiService(endpoint).then((data) => {
-        this.setPageTitle(data.content);
-        this.question = data;
+        if (data) {
+          this.setPageTitle(data.content);
+          this.question = data;
+        } else {
+          this.question = null;
+          this.setPageTitle("404 - Page Not Found");
+        }
       });
     },
     getQuestionAnswers() {

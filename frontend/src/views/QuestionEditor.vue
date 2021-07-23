@@ -1,6 +1,7 @@
 <template>
   <div class="mt-2">
-    <h1 class="mb-3">Ask a Question</h1>
+    <h1 class="mb-3" v-if="question_body">Edit Question</h1>
+    <h1 class="mb-3" v-else>Ask a Question</h1>
     <form @submit.prevent="onSubmit">
       <div class="mb-3">
         <textarea
@@ -61,9 +62,14 @@ export default {
     if (to.params.slug !== undefined) {
       let endpoint = `/api/questions/${to.params.slug}/`;
       let data = await apiService(endpoint);
-      return next((vm) => {
-        vm.question_body = data.content;
-      });
+      if (data) {
+        return next((vm) => {
+          vm.question_body = data.content;
+        });
+      } else {
+        to.params.slug = undefined;
+        return next();
+      }
     } else {
       return next();
     }
