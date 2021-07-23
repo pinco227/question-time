@@ -35,7 +35,7 @@
       </form>
     </div>
     <div v-else>
-      <button class="btn btn-sm btn-success" @click="showForm = true">
+      <button class="btn btn-sm btn-success mb-3" @click="showForm = true">
         Answer the Question
       </button>
     </div>
@@ -44,6 +44,8 @@
       v-for="(answer, index) in answers"
       :key="index"
       :answer="answer"
+      :requestUser="requestUser"
+      @delete-answer="deleteAnswer"
     />
     <div class="my-4" v-if="next">
       <p v-show="loadingAnswers">...loading...</p>
@@ -81,11 +83,15 @@ export default {
       showForm: false,
       next: null,
       loadingAnswers: false,
+      requestUser: null,
     };
   },
   methods: {
     setPageTitle(title) {
       document.title = title;
+    },
+    setRequestUser() {
+      this.requestUser = window.localStorage.getItem("username");
     },
     getQuestionData() {
       let endpoint = `/api/questions/${this.slug}/`;
@@ -129,10 +135,22 @@ export default {
         this.error = "You can't submit an empty asnwer!";
       }
     },
+    async deleteAnswer(answer) {
+      let endpoint = `/api/answers/${answer.id}/`;
+      let method = "DELETE";
+      try {
+        await apiService(endpoint, method);
+        this.answers.splice(this.answers.indexOf(answer), 1);
+        this.question.user_has_answered = false;
+      } catch (err) {
+        console.log(err);
+      }
+    },
   },
   created() {
     this.getQuestionData();
     this.getQuestionAnswers();
+    this.setRequestUser();
   },
 };
 </script>
